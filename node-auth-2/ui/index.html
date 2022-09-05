@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="container">
+            <div class="registration-form">
+                <form id="registration-form">
+                    <div class="input-control">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="Registration email" autocomplete="true"></input>
+                    </div>
+                    <div class="input-control">
+                        <label for="password"> Password:</label>
+                        <input type="password" name="password" placeholder="Type password here"
+                            autocomplete="true"></input>
+                    </div>
+
+                    <button type="submit">Register</button>
+
+                </form>
+            </div>
+            <div class="login-form">
+                <form id="login-form">
+                    <div class="input-control">
+
+                        <label for="email">Email</label>
+                        Email:<input type="email" name="email" placeholder="Email" autocomplete="false">
+                    </div>
+                    <div class="input-control">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="Password" autocomplete="false">
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+
+            </div>
+
+            <button onClick="logUserOut()" class="logout">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        const baseurl = "https://api.nodeauth.dev"
+        const logUserOut = async () => {
+            try {
+                await fetch(`${baseurl}/api/logout`, {
+                    method: "POST",
+                    credentials: 'include'
+                })
+            } catch (error) {
+                console.log(error)
+            }
+
+        }
+            ; (() => {
+                const registrationForm = document.getElementById("registration-form")
+                registrationForm.addEventListener("submit", async (e) => {
+                    e.preventDefault()
+                    try {
+
+                        const field_values = Object.values(registrationForm).reduce((obj, field) => {
+                            if (field.name) {
+                                obj[field.name] = field.value
+                            }
+
+                            return obj
+                        }, {})
+                        const res = await fetch(baseurl + "/api/register", {
+                            method: "POST",
+                            body: JSON.stringify(field_values),
+                            credentials: 'include',
+                            headers: { "Content-type": "application/json; charset=UTF-8" }
+
+                        })
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+
+                const loginForm = document.getElementById("login-form")
+                loginForm.addEventListener("submit", async (e) => {
+                    e.preventDefault()
+                    try {
+                        const field_values = Object.values(loginForm).reduce((obj, field) => {
+                            if (field.name) {
+                                obj[field.name] = field.value
+                            }
+                            return obj
+                        }, {})
+
+                        // send data to server on route /api/login
+                        await fetch(baseurl + "/api/login", {
+                            method: "POST",
+                            body: JSON.stringify(field_values),
+                            credentials: 'include',
+                            headers: { "Content-type": "application/json, charset:UTF-8" }
+                        })
+
+                    } catch (error) {
+                        console.log(error)
+                    }
+                })
+            })()
+    </script>
+</body>
+
+</html>
