@@ -1,0 +1,9 @@
+{
+    local_certs
+}
+hari.dev {
+        reverse_proxy 127.0.0.1:3002
+}
+api.hari.dev {
+    reverse_proxy 127.0.0.1:3003
+}
