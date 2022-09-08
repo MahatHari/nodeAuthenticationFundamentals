@@ -136,6 +136,12 @@ async function startApp() {
       }
     });
 
+    // verify route
+    app.post("/api/verify", {}, (req, res) => {
+      const { email, token } = req.body;
+      console.log(first);
+    });
+
     // New Route to display logged user
     app.get("/test", {}, async (req, res) => {
       try {
